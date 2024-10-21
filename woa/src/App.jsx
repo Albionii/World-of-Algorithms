@@ -1,17 +1,21 @@
 import './App.css'
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Home from './Home'
+import GenerateTree from './tree/GenerateTree';
 
 function App() {
 
   return (
     <>
-      <h1>What would you like to do, Sire?</h1>
-      <div className='flex flex-col gap-2 m-10'>
-        <button onClick={""}>Generate Tree</button>
-        <button onClick={""}>Dijkstra Algorithm</button>
-        <button onClick={""}>A*</button>
-        <button onClick={""}>Depth First Search</button>
-        <button onClick={""}>Breadth First Search</button>
-      </div>
+
+      <Router>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/tree" element={<GenerateTree />} />
+          {/* <Route path="/contact" element={<Contact />} /> */}
+        </Routes>
+      </Router>
+      
     </>
   )
 }
