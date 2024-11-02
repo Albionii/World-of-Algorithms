@@ -1,13 +1,90 @@
-import React from 'react'
+import React, { useState } from 'react'
+import Node from '../node/Node';
+import Edge from '../node/Edge';
+import Graph from '../graph/Graph';
 
 export default function GenerateTree() {
+  const [nodes, setNodes] = useState([]);
+  const [edges, setEdges] = useState([]);
+  const [index, setIndex] = useState(null);
+  const [isDrawing, setIsDrawing] = useState(false);
+  const [mousePos, setMousePos] = useState({x:0, y:0});
+  const [previousNode, setPreviousNode] = useState(null);
+  const [isDragging, setIsDragging] = useState(false);
+  
+
+  const mousePosition = (e) => {
+    const x = e.clientX;
+    const y = e.clientY-2*Node.size;
+    setMousePos({x:x, y:y});
+    return {x, y};
+  }
+
+  const updateNodePositions = (pos) => {
+    if (index != null ){
+      setNodes((prevNodes) =>
+        prevNodes.map((node, i) =>
+          i === index ? node.changePosition(pos.x, pos.y) : node
+        )
+      );
+    }
+  }
+
+  const handleDoubleClick = (e) => {
+    const pos = mousePosition(e);
+    setNodes([...nodes, new Node(pos.x, pos.y, nodes.length + 1)])
+  }
+
+  const handleMouseDown = (nodeIndex) => {
+    setIndex(nodeIndex);
+    setIsDragging(true);
+  }
+  
+  const handleMouseMove = (e) => {
+    const pos = mousePosition(e);
+    if (isDragging){
+      setIsDrawing(false);
+    }
+    updateNodePositions(pos);
+  }
+
+  const handleMouseUp = ()=>{
+    setIndex(null);
+    setIsDragging(false);
+  }
+
+  
+  const handleEdge = (node) => {
+    if (isDrawing == false) {
+      setIsDrawing(true);
+      setPreviousNode(node);
+    }
+    else {
+      setIsDrawing(false);
+      const newEdge = new Edge(previousNode, node,1);
+      setEdges([...edges, newEdge]);
+    }
+  }
+
+
   return (
     <div className='bg-neutral-800 h-screen flex flex-col items-center'>
-      <div className='flex justify-center items-center mt-3'>
+      <div className='flex justify-center items-center py-6'>
         <span className='text-white'>Shkruani vlerat : </span>
         <input type="text" className='bg-slate-400 rounded border hover:border-blue-400'/>
       </div>
-      <div className="bg-white border h-full w-full m-10">
+      <div 
+        onDoubleClick={handleDoubleClick} 
+        onMouseMove={handleMouseMove}
+        onMouseUp={handleMouseUp}
+        className="relative bg-white border h-full w-full">
+        
+        <Graph 
+          graphData = {{nodes, edges, isDrawing, previousNode, index}}
+          handleEdge={handleEdge} 
+          handleMouseDown={handleMouseDown} 
+          mousePos={mousePos}
+        />
 
       </div>
     </div>

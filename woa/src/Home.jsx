@@ -7,10 +7,11 @@ export default function Home() {
     <h1 className='text-white text-[40px]'>What would you like to do, Sire?</h1>
     <div className='flex flex-col gap-2 m-10 text-white'>
       <Link to={'/tree'} className='border hover:border-blue-400 bg-black p-5 px-20 rounded-xl text-center'>Generate Tree</Link>
-      <Link to={'/tree'} className='border hover:border-blue-400 bg-black p-5 px-20 rounded-xl text-center'>Dijkstra Algorithm</Link>
-      <Link to={'/tree'} className='border hover:border-blue-400 bg-black p-5 px-20 rounded-xl text-center'>A*</Link>
-      <Link to={'/tree'} className='border hover:border-blue-400 bg-black p-5 px-20 rounded-xl text-center'>Depth First Search</Link>
-      <Link to={'/tree'} className='border hover:border-blue-400 bg-black p-5 px-20 rounded-xl text-center'>Breadth First Search</Link>
+      <Link to={'/dijkstra'} className='border hover:border-blue-400 bg-black p-5 px-20 rounded-xl text-center'>Dijkstra Algorithm</Link>
+      <Link to={'/a*'} className='border hover:border-blue-400 bg-black p-5 px-20 rounded-xl text-center'>A*</Link>
+      <Link to={'/dfs'} className='border hover:border-blue-400 bg-black p-5 px-20 rounded-xl text-center'>Depth First Search</Link>
+      <Link to={'/bfs'} className='border hover:border-blue-400 bg-black p-5 px-20 rounded-xl text-center'>Breadth First Search</Link>
+      <Link to={'/test'} className='border hover:border-blue-400 bg-black p-5 px-20 rounded-xl text-center'>Test</Link>
     </div>
   </div>
   )
