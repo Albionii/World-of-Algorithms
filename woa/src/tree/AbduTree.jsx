@@ -5,14 +5,36 @@ function AbduTree() {
   const [positions, setPositions] = useState([]);
   const [hookVertice, setHookVertice] = useState({ isHooked: false, vertice: -1 });
   const [edges, setEdges] = useState([]);
+  const[answer,setAnswer] = useState("");
+  const[nodeFunctions,setNodeFunctions] = useState(null);
+  const[id,setId] = useState(0);
+
+  const handleNodeFunctions = (position) => {
+    setNodeFunctions(position);
+    console.log(nodeFunctions);
+  }
+  const handleNodeEvents = (event) =>{
+    if(nodeFunctions != null){
+        if(event.key === 'q'){
+          const updatedEdges = edges.filter(edge => edge.from !== nodeFunctions.id && edge.to !== nodeFunctions.id);
+          setEdges(updatedEdges);
+          const updatedVertices = positions.filter(position => position.id !== nodeFunctions.id);
+          setPositions(updatedVertices);
+
+
+        }
+      setNodeFunctions(null);
+
+    }
+  }
 
 
   const handlePositions = (event) => {
     setPositions([
       ...positions,
-      { x: event.clientX, y: event.clientY }
+      {id:id, x: event.clientX, y: event.clientY }
     ]);
-    console.log(positions);
+    setId(id + 1);
   }
   const clickVertice = (vertice) => {
     if (!hookVertice.isHooked) {
@@ -52,6 +74,7 @@ function AbduTree() {
     if (isNaN(parseInt(values[0])) || isNaN(parseInt(values[1]))) {
       return;
     }
+
     const exists = edges.some(edge =>
       (edge.from == values[0] || edge.to == values[0]) 
     );
@@ -67,12 +90,15 @@ function AbduTree() {
       edges.forEach((edge) => {
         // g.addEdge(new Graph.Edge(edge.from, edge.to, edge.dis));
         g.addEdge(parseInt(edge.from), parseInt(edge.to), { weight: parseInt(edge.dis) });
+        g.addEdge(parseInt(edge.to), parseInt(edge.from), { weight: parseInt(edge.dis) });
       });
       const shortestPathR = shortestPath(g,parseInt(values[0]),parseInt(values[1]))
-      alert("Nodes : "+shortestPathR.nodes + " Weight: " + shortestPathR.weight);
+      setAnswer("Path : "+shortestPathR.nodes + " Total Weight: " + shortestPathR.weight);
       
 
 
+    }else{
+      setAnswer(" ");
     }
   }
   return (
@@ -83,28 +109,40 @@ function AbduTree() {
         <label for="fname">Find path from to:</label>
         <input type="text" id="fname" name="fname" placeholder='example:3,2' onChange={(e) => handleSP(e)} />
       </div>
-      <div className="container w-screen h-svh bg-transparent" onClick={handlePositions}>
+      <div style={{
+        position: 'fixed',
+      }} className='flex items-center justify-end align-middle'>
+        <h3>{answer}</h3>
+      </div>
+      
+      <div className="w-screen h-screen bg-slate-700" onClick={handlePositions} tabIndex={0} onKeyDown={handleNodeEvents}>
         {/* <div className='w-10 border-2 border-violet-950 rounded-full h-10'></div> */}
         {
           positions.map((position, index) => (
             <div
               onClick={(e) => {
                 e.stopPropagation(); // Prevents bubbling
-                clickVertice(index);
+                clickVertice(position.id);
               }}
+              onMouseOver={(e)=>{
+                e.stopPropagation(); // Prevents bubbling
+                handleNodeFunctions(position)}
+              }
+              onMouseLeave={(e)=> {e.stopPropagation();
+                handleNodeFunctions(null)}}
               key={index}
               style={{
                 position: 'absolute',
                 top: position.y,
                 left: position.x,
                 zIndex: 2,
-                backgroundColor: hookVertice.vertice == index ? "black" : "white",
+                backgroundColor: hookVertice.vertice == position.id ? "black" : "white",
               }}
               className='w-10 border-2 border-violet-950 rounded-full h-10 flex items-center justify-center content-center text-center'
             >
 
 
-              <p className=' hover:text-inherit'>{index}</p>
+              <p className=' hover:text-inherit'>{position.id}</p>
             </div>
           ))
         }
@@ -114,10 +152,12 @@ function AbduTree() {
         }}>
 
           {edges.map((edge, index) => {
-            const startX = positions[edge.from].x + 20;
-            const startY = positions[edge.from].y + 20;
-            const endX = positions[edge.to].x + 20;
-            const endY = positions[edge.to].y + 20;
+            const fromIndex = positions.find(pos => pos.id === edge.from);
+            const toIndex = positions.find(pos => pos.id === edge.to);
+            const startX = fromIndex.x + 20;
+            const startY = fromIndex.y + 20;
+            const endX = toIndex.x + 20;
+            const endY = toIndex.y + 20;
 
             // Calculate midpoint for the text position
             const midX = (startX + endX) / 2;
@@ -132,11 +172,12 @@ function AbduTree() {
                   y1={startY}
                   x2={endX}
                   y2={endY}
-                  stroke="black"
+                  stroke="grey"
                 />
                 {/* Display text in the middle of the line */}
                 <text x={midX} y={midY} textAnchor="middle" fill="black" fontSize="12" onClick={(e) => {
-                  e.stopPropagation(); // Prevents bubbling
+                  e.stopPropagation(); 
+                  setPositions([...positions]);
                   changeDis(index);
                 }}>
                   {edge.dis}
