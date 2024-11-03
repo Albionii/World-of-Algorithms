@@ -2,6 +2,9 @@ import Node from '../node/Node';
 
 const Graph = ({graphData, handleEdge, handleMouseDown, mousePos}) => {
   const {nodes, edges, index, previousNode, isDrawing} = graphData;
+
+
+  
   const generateGraph = () => {
     return(
       nodes.map((node, index)=>(

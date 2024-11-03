@@ -11,6 +11,7 @@ export default function GenerateTree() {
   const [mousePos, setMousePos] = useState({x:0, y:0});
   const [previousNode, setPreviousNode] = useState(null);
   const [isDragging, setIsDragging] = useState(false);
+  const [disableClick, setDisableClick] = useState(true);
   
 
   const mousePosition = (e) => {
@@ -44,6 +45,7 @@ export default function GenerateTree() {
     const pos = mousePosition(e);
     if (isDragging){
       setIsDrawing(false);
+      setDisableClick(false);
     }
     updateNodePositions(pos);
   }
@@ -55,16 +57,28 @@ export default function GenerateTree() {
 
   
   const handleEdge = (node) => {
-    if (isDrawing == false) {
-      setIsDrawing(true);
-      setPreviousNode(node);
+    if(disableClick){
+      if (isDrawing == false) {
+        setIsDrawing(true);
+        setPreviousNode(node);
+      }
+      else {
+        setIsDrawing(false);
+        if(previousNode != node) {
+          const newEdge = new Edge(previousNode, node,1);
+          setEdges([...edges, newEdge]);
+        }
+      }
     }
-    else {
-      setIsDrawing(false);
-      const newEdge = new Edge(previousNode, node,1);
-      setEdges([...edges, newEdge]);
-    }
+    setDisableClick(true);
   }
+
+  const handleKey = (e) => {
+    nodes.map((node) => (
+      console.log(node.label + " : " + node.getConnectedNodes())
+    ))
+  }
+
 
 
   return (
@@ -74,6 +88,8 @@ export default function GenerateTree() {
         <input type="text" className='bg-slate-400 rounded border hover:border-blue-400'/>
       </div>
       <div 
+        tabIndex="0"
+        onKeyDown={handleKey}
         onDoubleClick={handleDoubleClick} 
         onMouseMove={handleMouseMove}
         onMouseUp={handleMouseUp}
