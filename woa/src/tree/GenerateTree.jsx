@@ -73,11 +73,6 @@ export default function GenerateTree() {
     setDisableClick(true);
   }
 
-  const handleKey = (e) => {
-    nodes.map((node) => (
-      console.log(node.label + " : " + node.getConnectedNodes())
-    ))
-  }
 
 
 
@@ -88,8 +83,6 @@ export default function GenerateTree() {
         <input type="text" className='bg-slate-400 rounded border hover:border-blue-400'/>
       </div>
       <div 
-        tabIndex="0"
-        onKeyDown={handleKey}
         onDoubleClick={handleDoubleClick} 
         onMouseMove={handleMouseMove}
         onMouseUp={handleMouseUp}

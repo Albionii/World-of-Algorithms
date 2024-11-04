@@ -36,6 +36,7 @@ export default class Node {
             height:Node.size,
             top: node.y-Node.size/2,
             left:node.x-Node.size/2,
+            cursor:"grab"
           }}
       >
             {node.label}
