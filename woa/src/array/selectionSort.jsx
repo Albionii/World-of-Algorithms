@@ -65,7 +65,7 @@ function selectionSort() {
   });
 
   async function handleText(num) {
-    divRefs.current[num].style.backgroundColor = 'blue';
+    divRefs.current[num].style.backgroundColor = '#219B9D';
     await delay(sortingSpeed);
     divRefs.current[num].style.backgroundColor = '';
 
@@ -81,10 +81,10 @@ function selectionSort() {
       let min_idx = i;
       setMinimum(min_idx);
       await handleText(1);
-      references.current[i].style.background = 'blue';
+      references.current[i].style.background = '#219B9D';
 
       for (let j = i + 1; j < n; j++) {
-        references.current[j].style.background = 'green';
+        references.current[j].style.background = '#4C1F7A';
 
         await handleText(2);
 
@@ -137,24 +137,27 @@ function selectionSort() {
 
   return (
     <div>
-      <div className='h-20 w-full bg-slate-700 flex items-center align-middle justify-center'>
+      <div className='h-20 w-full flex items-center align-middle justify-evenly' style={{backgroundColor: '#160a2a'}}>
         <div className=''>
           <input className='bg-slate-500 ' type="text" value={inputValue} onChange={handleInputs} />
-          <button onClick={sort}>SORT</button>
-          <label htmlFor="sortSpeed"> Sorting speed in ms:</label>
+          <button onClick={sort}
+           className='inline-block rounded bg-primary px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white shadow-primary-3 transition duration-150 ease-in-out hover:bg-primary-accent-300 hover:shadow-primary-2 focus:bg-primary-accent-300 focus:shadow-primary-2 focus:outline-none focus:ring-0 active:bg-primary-600 active:shadow-primary-2 motion-reduce:transition-none dark:shadow-black/30 dark:hover:shadow-dark-strong dark:focus:shadow-dark-strong dark:active:shadow-dark-strong'>
+            SORT</button>
+          </div>
+        <div>
+        <label htmlFor="sortSpeed" className='text-white'> Sorting speed in ms:</label>
           <input className='bg-slate-500 ' id='sortSpeed' type="number" value={sortingSpeed} onChange={handleSortingSpeed} />
-
+        
         </div>
-
       </div>
-      <div className='w-full h-screen bg-blue-950 flex items-center align-middle justify-center'>
+      <div className='w-full h-screen  flex items-center align-middle justify-center' style={{backgroundColor: '#260f3d'}}>
         {arrayData.map((element, index) => (
           <div
             key={index}
             ref={el => references.current[index] = el}
             className="w-10 h-10 border-2 border-violet-800  flex items-center align-middle justify-center flex-wrap"
             style={{
-              backgroundColor: minimumIndex == index ? 'red' : '',
+              backgroundColor: minimumIndex == index ? '#FF8000' : '',
             }}
           >
             <p className='font-semibold text-teal-700 '>{element}</p>
