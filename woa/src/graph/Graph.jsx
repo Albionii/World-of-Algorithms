@@ -2,6 +2,7 @@ import { useState } from 'react';
 import Node from '../node/Node';
 import WeightPopup from './WeightPopUp';
 
+
 const Graph = ({graphData, handleEdge, handleMouseDown, mousePos}) => {
   const {nodes, edges, index, previousNode, isDrawing} = graphData;
   const [popupData, setPopupData] = useState(null);
@@ -13,7 +14,7 @@ const Graph = ({graphData, handleEdge, handleMouseDown, mousePos}) => {
   const handleWeightSave = (newWeight) => {
     if (popupData) {
       popupData.edge.weight = parseInt(newWeight, 10);
-      setPopupData(null); // Close the popup after saving
+      setPopupData(null);
     }
   };
 
@@ -25,6 +26,12 @@ const Graph = ({graphData, handleEdge, handleMouseDown, mousePos}) => {
     )
   }
 
+  /**
+   * Displays all the edges that are already connected to nodes
+   * 
+   * and their corresponding weights.
+   * @returns The Edges connected to Nodes
+   */
   const renderEdges = () =>{
     return edges.map((edge, index) => {
       const node1 = nodes.find(node => node === edge.node1); 
@@ -65,6 +72,12 @@ const Graph = ({graphData, handleEdge, handleMouseDown, mousePos}) => {
   };
 
 
+  /**
+   * Creates a line that has one point to a node and one following
+   * 
+   * the mouse position.
+   * @returns {JSX.Element|null} The Edge that is currently being drawn.
+   */
   const edgeDrawing = () => {
 
     return (

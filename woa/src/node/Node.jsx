@@ -6,6 +6,16 @@ export default class Node {
     this.y = y;
     this.label = label;
     this.edges = [];
+    this.left = null;
+    this.right = null;
+  }
+
+  leftNode(value){
+    this.left = value;
+  }
+
+  rightNode(value){
+    this.right = value;
   }
 
   addEdge(edge){
@@ -43,5 +53,24 @@ export default class Node {
       </div>
     )    
   }
+
+  static drawNodeLine(node, index){
+    return (
+      <div 
+          key={index} 
+          className='bg-blue-600 rounded-full absolute flex justify-center items-center select-none'         
+          style={{
+            width:Node.size,
+            height:Node.size,
+            top: node.y-Node.size/2,
+            left:node.x-Node.size/2,
+            transition: "transform 1s ease, top 1s ease, left 1s ease"
+          }}
+      >
+            {node.label}
+      </div>
+    )    
+  }
+
 
 }

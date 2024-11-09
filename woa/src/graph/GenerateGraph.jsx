@@ -1,9 +1,9 @@
 import React, { useState } from 'react'
 import Node from '../node/Node';
 import Edge from '../node/Edge';
-import Graph from '../graph/Graph';
+import Graph from './Graph';
 
-export default function GenerateTree() {
+export default function GenerateGraph() {
   const [nodes, setNodes] = useState([]);
   const [edges, setEdges] = useState([]);
   const [index, setIndex] = useState(null);
