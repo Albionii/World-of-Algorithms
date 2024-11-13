@@ -26,6 +26,7 @@ const Graph = ({graphData, handleEdge, handleMouseDown, mousePos}) => {
     )
   }
 
+
   /**
    * Displays all the edges that are already connected to nodes
    * 
